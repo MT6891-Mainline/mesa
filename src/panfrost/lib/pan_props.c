@@ -68,6 +68,12 @@ const struct panfrost_model panfrost_model_list[] = {
         MODEL(0x9091, 0, "G57",    "TNAx", HAS_ANISO,         16384, {}),
         MODEL(0x9093, 0, "G57",    "TNAx", HAS_ANISO,         16384, {}),
 
+        /* Mali-G77 (Valhall gen2), as found in the MediaTek MT6893/
+         * MT6891.  Same JM front-end as the G57 but a distinct product
+         * ID; the TTRx block names its performance counters.
+         */
+        MODEL(0x9080, 0, "G77",    "TTRx", HAS_ANISO,         16384, {}),
+
         MODEL(0xa867, 0, "G610",   "TVIx", HAS_ANISO,         32768, {}),
         MODEL(0xac74, 0, "G310",   "TVAx", HAS_ANISO,         16384, {}),
         MODEL(0xac74, 1, "G310",   "TVAx", HAS_ANISO,         16384, {}),
