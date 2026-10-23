@@ -1,0 +1,37 @@
+From 522df1ccf13c45168b1c93f07eee9012c2d994cb Mon Sep 17 00:00:00 2001
+From: chopin <chopin@localhost>
+Date: Fri, 23 Oct 2026 15:30:18 +0800
+Subject: [PATCH] panfrost: add the Mali-G77
+
+MediaTek MT6893/MT6891 (Redmi Note 10 Pro 5G, POCO X3 GT) integrates a
+Mali-G77 whose product ID is 0x9080.  It is the same Valhall generation
+as the G57 and uses the same job manager, but its performance counters
+live in the TTRx block (src/panfrost/perf/G77.xml) and its tile buffer
+is 16 KiB, so it needs a model entry of its own.
+
+Without this the DRI driver bails out in panfrost_get_model() and the
+whole GL stack falls back to llvmpipe.
+---
+ src/panfrost/lib/pan_props.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/panfrost/lib/pan_props.c b/src/panfrost/lib/pan_props.c
+index 3b0fa99..2170019 100644
+--- a/src/panfrost/lib/pan_props.c
++++ b/src/panfrost/lib/pan_props.c
+@@ -68,6 +68,12 @@ const struct panfrost_model panfrost_model_list[] = {
+         MODEL(0x9091, 0, "G57",    "TNAx", HAS_ANISO,         16384, {}),
+         MODEL(0x9093, 0, "G57",    "TNAx", HAS_ANISO,         16384, {}),
+ 
++        /* Mali-G77 (Valhall gen2), as found in the MediaTek MT6893/
++         * MT6891.  Same JM front-end as the G57 but a distinct product
++         * ID; the TTRx block names its performance counters.
++         */
++        MODEL(0x9080, 0, "G77",    "TTRx", HAS_ANISO,         16384, {}),
++
+         MODEL(0xa867, 0, "G610",   "TVIx", HAS_ANISO,         32768, {}),
+         MODEL(0xac74, 0, "G310",   "TVAx", HAS_ANISO,         16384, {}),
+         MODEL(0xac74, 1, "G310",   "TVAx", HAS_ANISO,         16384, {}),
+-- 
+2.47.3
+
